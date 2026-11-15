@@ -1,23 +1,48 @@
 
-const nodemailer = require("nodemailer");
-
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT || 465),
-    secure: process.env.SMTP_SECURE === "true",
-
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
+const sendEmail = async ({ to, subject, text, html }) => {
+    if (!process.env.BREVO_API_KEY) {
+        throw new Error("BREVO_API_KEY is missing");
     }
-});
+
+    if (!process.env.EMAIL_FROM) {
+        throw new Error("EMAIL_FROM is missing");
+    }
+
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+            accept: "application/json",
+            "api-key": process.env.BREVO_API_KEY,
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            sender: {
+                name: process.env.EMAIL_FROM_NAME || "ReWear",
+                email: process.env.EMAIL_FROM
+            },
+            to: [{ email: to }],
+            subject,
+            textContent: text,
+            htmlContent: html
+        })
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(
+            result.message || `Brevo email failed with status ${response.status}`
+        );
+    }
+
+    return result;
+};
 
 const sendVerificationEmail = async (email, name, token) => {
     const verificationUrl =
         `${process.env.BACKEND_URL}/api/auth/verify-email?token=${encodeURIComponent(token)}`;
 
-    await transporter.sendMail({
-        from: process.env.EMAIL_FROM,
+    await sendEmail({
         to: email,
         subject: "Verify your ReWear email address",
 
@@ -62,12 +87,12 @@ If you did not create a ReWear account, you can ignore this email.
 
 const sendPasswordResetEmail = async (email, name, token) => {
     const resetUrl =
-        `${process.env.BACKEND_URL}/api/auth/reset-password?token=${token}`;
+        `${process.env.BACKEND_URL}/api/auth/reset-password?token=${encodeURIComponent(token)}`;
 
-    await transporter.sendMail({
-        from: process.env.EMAIL_FROM,
+    await sendEmail({
         to: email,
         subject: "Reset your ReWear password",
+
         text: `Hello ${name},
 
 We received a request to reset your ReWear password.
@@ -78,16 +103,11 @@ ${resetUrl}
 This link expires in 15 minutes. If you did not request this, you can ignore this email.
 
 ReWear Team`,
+
         html: `
             <div style="font-family: Arial, sans-serif; max-width: 550px; margin: auto; padding: 25px;">
                 <h2>Reset your ReWear password</h2>
-                <p>Hello ${String(name || "there").replace(/[&<>"']/g, char => ({
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    ">": "&gt;",
-                    '"': "&quot;",
-                    "'": "&#39;"
-                }[char]))},</p>
+                <p>Hello ${escapeHtml(name || "there")},</p>
                 <p>We received a request to reset your ReWear password.</p>
                 <p>
                     <a href="${resetUrl}"
