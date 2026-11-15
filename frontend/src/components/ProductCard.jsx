@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import API_BASE_URL from "../utils/api";
 
 function ProductCard({ product }) {
 
@@ -12,7 +13,7 @@ function ProductCard({ product }) {
             if (images.length > 0) {
                 image = images[0].startsWith("http")
                     ? images[0]
-                    : `http://localhost:5000${images[0]}`;
+                    : `${API_BASE_URL}${images[0]}`;
             }
         }
 
@@ -28,9 +29,10 @@ function ProductCard({ product }) {
 
     // Support older products
     // that may still use image_url
-
     if (!image && product.image_url) {
-        image = product.image_url;
+        image = product.image_url.startsWith("/")
+            ? `${API_BASE_URL}${product.image_url}`
+            : product.image_url;
     }
 
 

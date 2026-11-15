@@ -1,3 +1,4 @@
+import API_BASE_URL from "../utils/api";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProductImageUrls } from "../utils/productImages";
@@ -19,7 +20,7 @@ function ProductDetails() {
             try {
 
                 const response = await fetch(
-                    `http://localhost:5000/api/products/${id}`
+                    `${API_BASE_URL}/api/products/${id}`
                 );
 
                 const data = await response.json();
@@ -79,7 +80,7 @@ function ProductDetails() {
         try {
 
             const response = await fetch(
-                `http://localhost:5000/api/products/${id}/request`,
+                `${API_BASE_URL}/api/products/${id}/request`,
                 {
                     method: "POST",
 
@@ -154,7 +155,7 @@ function ProductDetails() {
         try {
 
             const response = await fetch(
-                `http://localhost:5000/api/products/${id}/offer`,
+                `${API_BASE_URL}/api/products/${id}/offer`,
                 {
                     method: "POST",
 

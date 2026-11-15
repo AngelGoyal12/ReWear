@@ -1,8 +1,9 @@
+import API_BASE_URL from "../utils/api";
 
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const API_URL = "http://localhost:5000/api/profile";
+const API_URL = `${API_BASE_URL}/api/profile`;
 
 function Profile() {
   const [user, setUser] = useState(null);

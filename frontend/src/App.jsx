@@ -28,7 +28,7 @@ import OrderDetails from "./pages/OrderDetails";
 
 import Payment from "./pages/Payment";
 import { ToastProvider } from "./context/ToastContext";
-
+import API_BASE_URL from "./utils/api";
 
 function App() {
     const location = useLocation();
@@ -40,7 +40,7 @@ function App() {
 
     useEffect(() => {
 
-        fetch("http://localhost:5000/api/products")
+        fetch(`${API_BASE_URL}/api/products`)
             .then((response) => response.json())
             .then((data) => {
                 setProducts(data);

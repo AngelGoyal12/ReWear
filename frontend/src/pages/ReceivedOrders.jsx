@@ -1,3 +1,4 @@
+import API_BASE_URL from "../utils/api";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +16,7 @@ function ReceivedOrders() {
     const fetchOrders = async () => {
         try {
             const response = await fetch(
-                "http://localhost:5000/api/orders/received",
+                `${API_BASE_URL}/api/orders/received`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -67,7 +68,7 @@ function ReceivedOrders() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/api/orders/${orderId}/status`,
+                `${API_BASE_URL}/api/orders/${orderId}/status`,
                 {
                     method: "PUT",
                     headers: {

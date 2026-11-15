@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
+import API_BASE_URL from "../utils/api";
 
 function CreateListing() {
     const navigate = useNavigate();
@@ -80,7 +81,7 @@ function CreateListing() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/products",
+                `${API_BASE_URL}/api/products`,
                 {
                     method: "POST",
                     headers: {

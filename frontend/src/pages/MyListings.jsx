@@ -1,3 +1,4 @@
+import API_BASE_URL from "../utils/api";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +22,7 @@ function MyListings() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/products/my-listings",
+                `${API_BASE_URL}/api/products/my-listings`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -58,7 +59,7 @@ function MyListings() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/api/products/${productId}`,
+                `${API_BASE_URL}/api/products/${productId}`,
                 {
                     method: "DELETE",
                     headers: {

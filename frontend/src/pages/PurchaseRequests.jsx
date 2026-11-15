@@ -1,3 +1,4 @@
+import API_BASE_URL from "../utils/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductImage from "../components/ProductImage";
@@ -20,7 +21,7 @@ function PurchaseRequests() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/products/purchase-requests",
+                `${API_BASE_URL}/api/products/purchase-requests`,
                 {
                     headers: {
                         Authorization:
@@ -60,7 +61,7 @@ function PurchaseRequests() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/api/products/purchase-requests/${requestId}/accept`,
+                `${API_BASE_URL}/api/products/purchase-requests/${requestId}/accept`,
                 {
                     method: "PUT",
                     headers: {
@@ -102,7 +103,7 @@ function PurchaseRequests() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/api/products/purchase-requests/${requestId}/reject`,
+                `${API_BASE_URL}/api/products/purchase-requests/${requestId}/reject`,
                 {
                     method: "PUT",
                     headers: {

@@ -1,3 +1,4 @@
+import API_BASE_URL from "../utils/api";
 
 import { useEffect, useState } from "react";
 import ProductImage from "../components/ProductImage";
@@ -16,7 +17,7 @@ function MyOffers() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/products/my-offers",
+                `${API_BASE_URL}/api/products/my-offers`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -51,7 +52,7 @@ function MyOffers() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/api/products/offers/${offerId}/accept-counter`,
+                `${API_BASE_URL}/api/products/offers/${offerId}/accept-counter`,
                 {
                     method: "PUT",
                     headers: {
@@ -85,7 +86,7 @@ function MyOffers() {
 
         try {
             const response = await fetch(
-                `http://localhost:5000/api/products/offers/${offerId}/reject-counter`,
+                `${API_BASE_URL}/api/products/offers/${offerId}/reject-counter`,
                 {
                     method: "PUT",
                     headers: {

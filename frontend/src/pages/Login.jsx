@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useToast } from "../context/ToastContext";
 import { Link, useNavigate } from "react-router-dom";
+import API_BASE_URL from "../utils/api";
 
 function Login() {
     const { showToast } = useToast();
@@ -19,7 +20,7 @@ function Login() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/auth/login",
+                `${API_BASE_URL}/api/auth/login`,
                 {
                     method: "POST",
                     headers: {
@@ -67,7 +68,7 @@ function Login() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/auth/resend-verification",
+                `${API_BASE_URL}/api/auth/resend-verification`,
                 {
                     method: "POST",
                     headers: {
@@ -102,7 +103,7 @@ function Login() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/auth/forgot-password",
+                `${API_BASE_URL}/api/auth/forgot-password`,
                 {
                     method: "POST",
                     headers: {

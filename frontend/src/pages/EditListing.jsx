@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useToast } from "../context/ToastContext";
+import API_BASE_URL from "../utils/api";
 import {
     useNavigate,
     useParams
@@ -29,7 +30,7 @@ function EditListing() {
         const fetchProduct = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/products/${id}`
+                    `${API_BASE_URL}/api/products/${id}`
                 );
 
                 const data = await response.json();
@@ -141,7 +142,7 @@ function EditListing() {
             });
 
             const response = await fetch(
-                `http://localhost:5000/api/products/${id}`,
+                `${API_BASE_URL}/api/products/${id}`,
                 {
                     method: "PUT",
                     headers: {
