@@ -1,0 +1,27 @@
+
+# Dependencies
+node_modules/
+
+# Build files
+dist/
+frontend/dist/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Certificates and private keys
+backend/certs/
+
+# Uploaded user images
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*
+
+# Operating system files
+.DS_Store
+Thumbs.db
