@@ -9,9 +9,10 @@ const orderRoutes = require("./routes/orderRoutes");
 
 const pool = require("./config/db");
 
+const app = express();
+
 require("dotenv").config();
 
-const app = express();
 
 app.use(cors());
 app.use(express.json());

@@ -1,3 +1,4 @@
+
 const mysql = require("mysql2/promise");
 const dotenv = require("dotenv");
 const fs = require("fs");
@@ -5,15 +6,22 @@ const path = require("path");
 
 dotenv.config({ path: path.join(__dirname, "..", ".env") });
 
-// Read Aiven's SSL certificate
 const caPath = path.resolve(
     __dirname,
     "..",
     process.env.DB_SSL_CA_PATH || "certs/ca.pem"
 );
 
-if (!fs.existsSync(caPath)) {
-    throw new Error(`Aiven CA certificate not found at: ${caPath}`);
+// Use the certificate from the hosting environment,
+// or fall back to the local certificate.
+let caCertificate;
+
+if (process.env.DB_SSL_CA) {
+    caCertificate = process.env.DB_SSL_CA.replace(/\\n/g, "\n");
+} else if (fs.existsSync(caPath)) {
+    caCertificate = fs.readFileSync(caPath, "utf8");
+} else {
+    throw new Error("Aiven SSL CA certificate not found");
 }
 
 const pool = mysql.createPool({
@@ -24,7 +32,7 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,
 
     ssl: {
-        ca: fs.readFileSync(caPath, "utf8"),
+        ca: caCertificate,
         rejectUnauthorized: true
     },
 
