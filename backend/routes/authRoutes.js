@@ -131,8 +131,8 @@ router.get("/verify-email", async (req, res) => {
         const token = String(req.query.token || "");
 
         if (!/^[a-f0-9]{64}$/i.test(token)) {
-            return res.status(400).send(
-                "Invalid verification link."
+            return res.redirect(
+                `${process.env.FRONTEND_URL}/login?verification=invalid`
             );
         }
 
@@ -155,8 +155,8 @@ router.get("/verify-email", async (req, res) => {
             if (tokens.length === 0) {
                 await connection.rollback();
 
-                return res.status(400).send(
-                    "This verification link is invalid or expired. Please request a new one."
+                return res.redirect(
+                    `${process.env.FRONTEND_URL}/login?verification=invalid`
                 );
             }
 

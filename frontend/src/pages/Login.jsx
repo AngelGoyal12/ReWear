@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "../context/ToastContext";
 import { Link, useNavigate } from "react-router-dom";
 import API_BASE_URL from "../utils/api";
@@ -7,6 +7,33 @@ import API_BASE_URL from "../utils/api";
 function Login() {
     const { showToast } = useToast();
     const navigate = useNavigate();
+
+    // Handle email verification redirects
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.get("verified") === "1") {
+            showToast(
+                "Email verified successfully! You can now log in.",
+                "success"
+            );
+        }
+
+        if (params.get("verification") === "invalid") {
+            showToast(
+                "This verification link is invalid or expired. If your email is already verified, please log in. Otherwise, request a new verification link.",
+                "error"
+            );
+        }
+
+        if (params.has("verified") || params.has("verification")) {
+            window.history.replaceState(
+                {},
+                document.title,
+                window.location.pathname
+            );
+        }
+    }, [showToast]);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
